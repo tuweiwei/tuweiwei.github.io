@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="//cdn.jsdelivr.net/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="工具,正则," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="条件或 ： ^(130|131|132|155|156|185|186|145|176)\d{8}$   区间    限定 0 到 9 可以写成 [0-9] 限定 A-Z 写成 [A-Z] 限定某些数字 [165]    ^((13[0-2])|(15[56])|(18[5-6])|145|176)\d{8}$  正前瞻 正后顾正前瞻： （？=pattern）1&amp;lt;span class=&amp;q">
+<meta name="keywords" content="工具,正则">
+<meta property="og:type" content="article">
+<meta property="og:title" content="正则">
+<meta property="og:url" content="tuweiwei.github.io/2018/10/25/正则表达式/index.html">
+<meta property="og:site_name" content="Blog Of tuwei">
+<meta property="og:description" content="条件或 ： ^(130|131|132|155|156|185|186|145|176)\d{8}$   区间    限定 0 到 9 可以写成 [0-9] 限定 A-Z 写成 [A-Z] 限定某些数字 [165]    ^((13[0-2])|(15[56])|(18[5-6])|145|176)\d{8}$  正前瞻 正后顾正前瞻： （？=pattern）1&amp;lt;span class=&amp;q">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://github.com/tuweiwei/StaticRaw/raw/master/flag.jpg">
+<meta property="og:updated_time" content="2018-10-28T09:38:03.804Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="正则">
+<meta name="twitter:description" content="条件或 ： ^(130|131|132|155|156|185|186|145|176)\d{8}$   区间    限定 0 到 9 可以写成 [0-9] 限定 A-Z 写成 [A-Z] 限定某些数字 [165]    ^((13[0-2])|(15[56])|(18[5-6])|145|176)\d{8}$  正前瞻 正后顾正前瞻： （？=pattern）1&amp;lt;span class=&amp;q">
+<meta name="twitter:image" content="https://github.com/tuweiwei/StaticRaw/raw/master/flag.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="tuweiwei.github.io/2018/10/25/正则表达式/"/>
+
+
+
+
+
+  <title>正则 | Blog Of tuwei</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Blog Of tuwei</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Stay Hungry, Stay Foolish</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="tuweiwei.github.io/2018/10/25/正则表达式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="tuwei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Blog Of tuwei">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">正则</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-10-25T22:50:21+08:00">
+                2018-10-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/工具/" itemprop="url" rel="index">
+                    <span itemprop="name">工具</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <ul>
+<li>条件或 ： ^(130|131|132|155|156|185|186|145|176)\d{8}$</li>
+</ul>
+<ul>
+<li>区间   <ul>
+<li>限定 0 到 9 可以写成 [0-9]</li>
+<li>限定 A-Z 写成 [A-Z]</li>
+<li>限定某些数字 [165]</li>
+</ul>
+</li>
+</ul>
+<p><code>^((13[0-2])|(15[56])|(18[5-6])|145|176)\d{8}$</code></p>
+<hr>
+<h1 id="正前瞻-正后顾"><a href="#正前瞻-正后顾" class="headerlink" title="正前瞻 正后顾"></a><strong>正前瞻 正后顾</strong></h1><p><strong>正前瞻： （？=pattern）</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;span class=&quot;read-count&quot;&gt;阅读数：641&lt;/span&gt;</span><br></pre></td></tr></table></figure></p>
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th style="text-align:center">正则</th>
+<th style="text-align:center">结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td style="text-align:center">.+(?=)</td>
+<td style="text-align:center"><span class="read-count">阅读数：641</span></td>
+</tr>
+<tr>
+<td>2</td>
+<td style="text-align:center">\d+(?=)</td>
+<td style="text-align:center">641</td>
+</tr>
+</tbody>
+</table>
+<p><strong>正后顾： （?&lt;=pattern）</strong></p>
+<h1 id="负前瞻-负后顾"><a href="#负前瞻-负后顾" class="headerlink" title="负前瞻 负后顾"></a><strong>负前瞻 负后顾</strong></h1><p><code>负前瞻：(?!pattern)</code></p>
+<blockquote>
+<p>例子：“我爱祖国，我是祖国的花朵”<br>句子里有两个祖国，现在要找到不是’的花朵’前面的祖国，即第一个祖国<br>用正则就可以这样写：    祖国(?!的花朵)<br>序号|正则|结果|<br>—|:–:|:—:<br>1|祖国(?!的花朵) |祖国</p>
+</blockquote>
+<p><code>负后顾：(?&lt;!pattern)</code></p>
+<h1 id="捕获-和-非捕获"><a href="#捕获-和-非捕获" class="headerlink" title="捕获 和 非捕获"></a><strong>捕获 和 非捕获</strong></h1><p>1 数字编号 捕获组</p>
+<blockquote>
+<p>例子； 020-85653333   (0\d{2})-(\d{8}) 第0个为本身<br>分组的个数有：2<br>第0个分组为：020-85653333<br>第1个分组为：020<br>第2个分组为：85653333</p>
+</blockquote>
+<p>2 命名编号 捕获组<br><strong><code>&quot;020-85653333&quot;</code></strong><br>“(?<quhao>0\d{2})-(?<haoma>\d{8})”</haoma></quhao></p>
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th style="text-align:center">名称</th>
+<th style="text-align:center">分组</th>
+<th style="text-align:center">内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">(0\d{2})-(\d{8})</td>
+<td style="text-align:center">020-85653333</td>
+</tr>
+<tr>
+<td>1</td>
+<td style="text-align:center">quhao</td>
+<td style="text-align:center">(0\d{2})</td>
+<td style="text-align:center">020</td>
+</tr>
+<tr>
+<td>2</td>
+<td style="text-align:center">haoma</td>
+<td style="text-align:center">(\d{8})</td>
+<td style="text-align:center">85653333</td>
+</tr>
+</tbody>
+</table>
+<p>非捕获组：标识那些不需要捕获的分组（排除它），也就是根据需要，保存你需要保存的组   “(?:0\d{2})-(\d{8})”</p>
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th style="text-align:center">名称</th>
+<th style="text-align:center">分组</th>
+<th style="text-align:center">内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">(0\d{2})-(\d{8})</td>
+<td style="text-align:center">020-85653333</td>
+</tr>
+<tr>
+<td>1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">(\d{8})</td>
+<td style="text-align:center">85653333</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h1 id="反向引用"><a href="#反向引用" class="headerlink" title="反向引用"></a><strong>反向引用</strong></h1><p>例子：比如要查找一串字母”aabbbbgbddesddfiid”里成对的字母。<br>(\w)\1<br>捕获组有两种命名方式，一种是是根据捕获分组顺序命名，一种是自定义命名来作为捕获组的命名在默认情况下都是以数字来命名，而且数字命名的顺序是从 1 开始的</p>
+<p>把字符串中abc换成a<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">String test = <span class="string">"abcbbabcbcgbddesddfiid"</span>;</span><br><span class="line"><span class="number">2</span>String reg=<span class="string">"(a)(b)c"</span>;</span><br><span class="line"><span class="number">3</span>System.out.println(test.replaceAll(reg, <span class="string">"$1"</span>));  $<span class="number">1</span>即为（a）</span><br></pre></td></tr></table></figure></p>
+<h1 id="贪婪和非贪婪"><a href="#贪婪和非贪婪" class="headerlink" title="贪婪和非贪婪"></a><strong>贪婪和非贪婪</strong></h1><p>贪婪匹配：当正则表达式中包含能接受重复的限定符时，通常的行为是（在使整个表达式能得到匹配的前提下）匹配尽可能多的字符，这匹配方式叫做贪婪匹配。<br>特性：一次性读入整个字符串进行匹配，每当不匹配就舍弃最右边一个字符，继续匹配，依次匹配和舍弃（这种匹配 - 舍弃的方式也叫做回溯），直到匹配成功或者把整个字符串舍弃完为止，因此它是一种最大化的数据返回，能多不会少。</p>
+<p>默认情况下 ？ * + {3,6} 为贪婪匹配<br>例子： 61762828 176 2991 44 871      reg: \d{3,6}<br>默认： 617628<br>       176<br>       2991<br>       871</p>
+<ul>
+<li>*重复零次或更多次</li>
+<li>+重复一次或更多次</li>
+<li>?    重复零次或一次</li>
+<li>{n}    重复n次</li>
+<li>{n,}    重复n次或更多次</li>
+<li>{n,m}    重复n到m次</li>
+<li>*?    重复任意次，但尽可能少重复</li>
+<li>+?    重复1次或更多次，但尽可能少重复</li>
+<li>??    重复0次或1次，但尽可能少重复</li>
+<li>{n,m}?    重复n到m次，但尽可能少重复</li>
+<li>{n,}?    重复n次以上，但尽可能少重复<br>以上默认都为 贪婪模式</li>
+</ul>
+<p>更多访问：<br><a href="http://tool.chinaz.com/regex/" target="_blank">站长之家</a></p>
+<p><img src="https://github.com/tuweiwei/StaticRaw/raw/master/flag.jpg" alt="图片alt"></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/工具/" rel="tag"># 工具</a>
+          
+            <a href="/tags/正则/" rel="tag"># 正则</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/25/androiddir/" rel="next" title="安卓存储卡目录">
+                <i class="fa fa-chevron-left"></i> 安卓存储卡目录
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/10/25/git/" rel="prev" title="git">
+                git <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">tuwei</p>
+              <p class="site-description motion-element" itemprop="description">blogs</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/yourname" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://plus.google.com/yourname" target="_blank" title="Google">
+                      
+                        <i class="fa fa-fw fa-google"></i>Google</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.v2ex.com" title="V2EX" target="_blank">V2EX</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.36zhen.com" title="前端书籍资料" target="_blank">前端书籍资料</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#正前瞻-正后顾"><span class="nav-number">1.</span> <span class="nav-text">正前瞻 正后顾</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#负前瞻-负后顾"><span class="nav-number">2.</span> <span class="nav-text">负前瞻 负后顾</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#捕获-和-非捕获"><span class="nav-number">3.</span> <span class="nav-text">捕获 和 非捕获</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#反向引用"><span class="nav-number">4.</span> <span class="nav-text">反向引用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#贪婪和非贪婪"><span class="nav-number">5.</span> <span class="nav-text">贪婪和非贪婪</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">tuwei</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="//cdn.jsdelivr.net/jquery/2.1.3/jquery.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="//cdn.jsdelivr.net/fancybox/2.1.5/jquery.fancybox.pack.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v="></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v="></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v="></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v="></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v="></script>
+<script type="text/javascript" src="/js/src/post-details.js?v="></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v="></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
