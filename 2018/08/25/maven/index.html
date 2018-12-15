@@ -70,7 +70,7 @@
 
 
 
-  <meta name="keywords" content="maven,工具," />
+  <meta name="keywords" content="工具,maven," />
 
 
 
@@ -82,14 +82,14 @@
 
 
 <meta name="description" content="maven学习">
-<meta name="keywords" content="maven,工具">
+<meta name="keywords" content="工具,maven">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Maven">
 <meta property="og:url" content="tuweiwei.github.io/2018/08/25/maven/index.html">
 <meta property="og:site_name" content="Blog Of tuwei">
 <meta property="og:description" content="maven学习">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-10-28T09:43:36.938Z">
+<meta property="og:updated_time" content="2018-11-03T12:02:29.706Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Maven">
 <meta name="twitter:description" content="maven学习">
@@ -365,13 +365,9 @@
 <p>system:  同provided  编译和测试    与本机系统相关  可移植性差</p>
 <p>import：   导入的范围， 使用在dependencyManagement中，表示从其他pom中 导入到自己的dependency的配置</p>
 <h1 id="传递依赖"><a href="#传递依赖" class="headerlink" title="传递依赖"></a>传递依赖</h1><p>A依赖于B   B依赖于C  那么A也会依赖于C 也就是A会同时引入B和C的 JAR包</p>
-<h1 id="排除依赖"><a href="#排除依赖" class="headerlink" title="排除依赖"></a>排除依赖</h1><p>上面 如果A只想依赖于B 那么排除C就要用到</p>
-<p><exclusions><br>    <exclusion><br>       <g><br>       <a><br>       <v><br>    <exclusino><br></exclusino></v></a></g></exclusion></exclusions></p>
+<h1 id="排除依赖"><a href="#排除依赖" class="headerlink" title="排除依赖"></a>排除依赖</h1><p>上面 如果A只想依赖于B 那么排除C就要用到<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;exclusions&gt;</span><br><span class="line">    &lt;exclusion&gt;</span><br><span class="line">       &lt;g&gt;</span><br><span class="line">       &lt;a&gt;</span><br><span class="line">       &lt;v&gt;</span><br><span class="line">    &lt;exclusino&gt;</span><br><span class="line">&lt;/exclusions&gt;</span><br></pre></td></tr></table></figure></p>
 <h1 id="依赖冲突"><a href="#依赖冲突" class="headerlink" title="依赖冲突"></a>依赖冲突</h1><p>1 短路优先 （注： maven对于同一jar 只会引入一个版本）<br>  A -&gt; B -&gt; C - &gt; X.JAR<br>  A -&gt; D -&gt; X.JAR<br>2 路径相同  先申明的优先</p>
-<h1 id="聚合和继承"><a href="#聚合和继承" class="headerlink" title="聚合和继承"></a>聚合和继承</h1><p>一般用于父子模块   集体编译<br>如 根工程中：</p>
-<p><packaging>pom</packaging></p>
-<modules><br>    <module>模块1</module><br>    <module>模块2</module><br>    <module>模块3</module><br></modules>
-
+<h1 id="聚合和继承"><a href="#聚合和继承" class="headerlink" title="聚合和继承"></a>聚合和继承</h1><p>一般用于父子模块   集体编译<br>如 根工程中：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;packaging&gt;pom&lt;/packaging&gt;</span><br><span class="line">&lt;modules&gt;</span><br><span class="line">    &lt;module&gt;模块1&lt;/module&gt;</span><br><span class="line">    &lt;module&gt;模块2&lt;/module&gt;</span><br><span class="line">    &lt;module&gt;模块3&lt;/module&gt;</span><br><span class="line">&lt;/modules&gt;</span><br></pre></td></tr></table></figure></p>
 <p>继承：子模块指定  parent标签 共用父模块 依赖</p>
 
       
@@ -390,9 +386,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/maven/" rel="tag"># maven</a>
-          
             <a href="/tags/工具/" rel="tag"># 工具</a>
+          
+            <a href="/tags/maven/" rel="tag"># maven</a>
           
         </div>
       
@@ -415,8 +411,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/09/16/树状数组学习/" rel="prev" title="树状数组学习">
-                树状数组学习 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/09/16/numpy/" rel="prev" title="numpy">
+                numpy <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -494,7 +490,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">16</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -505,7 +501,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -516,7 +512,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">17</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>

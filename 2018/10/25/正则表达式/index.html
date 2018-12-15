@@ -90,7 +90,7 @@
 <meta property="og:description" content="条件或 ： ^(130|131|132|155|156|185|186|145|176)\d{8}$   区间    限定 0 到 9 可以写成 [0-9] 限定 A-Z 写成 [A-Z] 限定某些数字 [165]    ^((13[0-2])|(15[56])|(18[5-6])|145|176)\d{8}$  正前瞻 正后顾正前瞻： （？=pattern）1&amp;lt;span class=&amp;q">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://github.com/tuweiwei/StaticRaw/raw/master/flag.jpg">
-<meta property="og:updated_time" content="2018-10-28T09:38:03.804Z">
+<meta property="og:updated_time" content="2018-11-03T12:02:29.718Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="正则">
 <meta name="twitter:description" content="条件或 ： ^(130|131|132|155|156|185|186|145|176)\d{8}$   区间    限定 0 到 9 可以写成 [0-9] 限定 A-Z 写成 [A-Z] 限定某些数字 [165]    ^((13[0-2])|(15[56])|(18[5-6])|145|176)\d{8}$  正前瞻 正后顾正前瞻： （？=pattern）1&amp;lt;span class=&amp;q">
@@ -394,14 +394,14 @@
 <p><strong>正后顾： （?&lt;=pattern）</strong></p>
 <h1 id="负前瞻-负后顾"><a href="#负前瞻-负后顾" class="headerlink" title="负前瞻 负后顾"></a><strong>负前瞻 负后顾</strong></h1><p><code>负前瞻：(?!pattern)</code></p>
 <blockquote>
-<p>例子：“我爱祖国，我是祖国的花朵”<br>句子里有两个祖国，现在要找到不是’的花朵’前面的祖国，即第一个祖国<br>用正则就可以这样写：    祖国(?!的花朵)<br>序号|正则|结果|<br>—|:–:|:—:<br>1|祖国(?!的花朵) |祖国</p>
+<p>例子：“我爱祖国，我是祖国的花朵”<br>句子里有两个祖国，现在要找到不是’的花朵’前面的祖国，即第一个祖国<br>用正则就可以这样写：    祖国(?!的花朵)<br>序号|正则|结果|<br>—|:–:|:—:<br>1|祖国(?!的花朵)|祖国</p>
 </blockquote>
 <p><code>负后顾：(?&lt;!pattern)</code></p>
 <h1 id="捕获-和-非捕获"><a href="#捕获-和-非捕获" class="headerlink" title="捕获 和 非捕获"></a><strong>捕获 和 非捕获</strong></h1><p>1 数字编号 捕获组</p>
 <blockquote>
 <p>例子； 020-85653333   (0\d{2})-(\d{8}) 第0个为本身<br>分组的个数有：2<br>第0个分组为：020-85653333<br>第1个分组为：020<br>第2个分组为：85653333</p>
 </blockquote>
-<p>2 命名编号 捕获组<br><strong><code>&quot;020-85653333&quot;</code></strong><br>“(?<quhao>0\d{2})-(?<haoma>\d{8})”</haoma></quhao></p>
+<p>2 命名编号 捕获组<br><strong><code>&quot;020-85653333&quot;</code></strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(?&lt;quhao&gt;0\d&#123;2&#125;)-(?&lt;haoma&gt;\d&#123;8&#125;)</span><br></pre></td></tr></table></figure></p>
 <table>
 <thead>
 <tr>
@@ -519,8 +519,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/10/25/git/" rel="prev" title="git">
-                git <i class="fa fa-chevron-right"></i>
+              <a href="/2018/10/25/服务器篇/" rel="prev" title="完成端口">
+                完成端口 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -598,7 +598,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">16</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -609,7 +609,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -620,7 +620,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">17</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>

@@ -265,6 +265,875 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="tuweiwei.github.io/2018/11/01/with 语法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="tuwei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Blog Of tuwei">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/11/01/with 语法/" itemprop="url">sql高级语法-WITH</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-11-01T22:50:21+08:00">
+                2018-11-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据库/" itemprop="url" rel="index">
+                    <span itemprop="name">数据库</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="with-语法"><a href="#with-语法" class="headerlink" title="with 语法"></a><strong>with 语法</strong></h1><p>用来实现递归查询，比如当要查询部门时，查询当前部门及下属部门就要采用递归的查询</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Id</th>
+<th style="text-align:center">Pid</th>
+<th style="text-align:center">DeptName </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">总部</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">研发部</td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">测试部</td>
+</tr>
+<tr>
+<td style="text-align:center">4</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">质量部</td>
+</tr>
+<tr>
+<td style="text-align:center">5</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">小组1</td>
+</tr>
+<tr>
+<td style="text-align:center">6</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">小组2</td>
+</tr>
+<tr>
+<td style="text-align:center">7</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">测试1</td>
+</tr>
+<tr>
+<td style="text-align:center">8</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">测试2</td>
+</tr>
+<tr>
+<td style="text-align:center">9</td>
+<td style="text-align:center">5</td>
+<td style="text-align:center">前端组</td>
+</tr>
+<tr>
+<td style="text-align:center">10</td>
+<td style="text-align:center">5</td>
+<td style="text-align:center">美工</td>
+</tr>
+</tbody>
+</table>
+<p>要实现的效果：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Id</th>
+<th style="text-align:center">Pid</th>
+<th style="text-align:center">DeptName</th>
+<th style="text-align:center">lvl</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">2</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">研发部</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">5</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">小组1</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">6</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">小组2</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">9</td>
+<td style="text-align:center">5</td>
+<td style="text-align:center">前端组</td>
+<td style="text-align:center">2</td>
+</tr>
+<tr>
+<td style="text-align:center">10</td>
+<td style="text-align:center">5</td>
+<td style="text-align:center">美工</td>
+<td style="text-align:center">2</td>
+</tr>
+</tbody>
+</table>
+<p>查询sql:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">with cte as</span><br><span class="line">(</span><br><span class="line">    <span class="keyword">select</span> <span class="keyword">Id</span>,Pid,DeptName,<span class="number">0</span> <span class="keyword">as</span> lvl <span class="keyword">from</span> Department</span><br><span class="line">    <span class="keyword">where</span> <span class="keyword">Id</span> = <span class="number">2</span></span><br><span class="line">    <span class="keyword">union</span> all</span><br><span class="line">    <span class="keyword">select</span> d.Id,d.Pid,d.DeptName,lvl+<span class="number">1</span> <span class="keyword">from</span> cte c <span class="keyword">inner</span> <span class="keyword">join</span>   Department d</span><br><span class="line">    <span class="keyword">on</span> c.Id = d.Pid</span><br><span class="line">)</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> cte</span><br></pre></td></tr></table></figure>
+<p>执行过程：<br>    递归CTE最少包含两个查询(也被称为成员)。第一个查询为定点成员，定点成员只是一个返回有效表的查询，用于递归的基础或定位点。第二个查询被称为递归成员，使该查询称为递归成员的是对CTE名称的递归引用是触发</p>
+<p>首先定点成员 ：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select Id,Pid,DeptName,0 as lvl from Department where Id = 2</span><br></pre></td></tr></table></figure></p>
+<p>查询出来的结果集为ID=2的一条数据<br>接下来此条数据作为第二个查询的基础 也就是cte<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select d.Id,d.Pid,d.DeptName,lvl+1 from cte c inner join   Department d on c.Id = d.Pid</span><br></pre></td></tr></table></figure></p>
+<p>此时查出的结果集为 id为2的这一条数据和Department表作连接</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Id</th>
+<th style="text-align:center">Pid</th>
+<th style="text-align:center">DeptName</th>
+<th>lvl</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">2</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">研发部</td>
+<td>0</td>
+</tr>
+<tr>
+<td style="text-align:center">5</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">小组1</td>
+<td>1</td>
+</tr>
+<tr>
+<td style="text-align:center">6</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">小组2</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>同理 将得到的记录（上面的id=5和id=6的2条数据作为 cte，id为2的是条件，不是本次的结果）再作为基础，再与Department表作连接 得到</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Id</th>
+<th style="text-align:center">Pid</th>
+<th style="text-align:center">DeptName</th>
+<th style="text-align:center">lvl</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">2</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">研发部</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">5</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">小组1</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">6</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">小组2</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">9</td>
+<td style="text-align:center">5</td>
+<td style="text-align:center">前端组</td>
+<td style="text-align:center">2</td>
+</tr>
+<tr>
+<td style="text-align:center">10</td>
+<td style="text-align:center">5</td>
+<td style="text-align:center">美工</td>
+<td style="text-align:center">2</td>
+</tr>
+</tbody>
+</table>
+<p>依此类推  最后一次讲上面id=9和id=10的记录作为cte ，再与Department表作连接  ， 此次的结果为空 ，递归结束。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="tuweiwei.github.io/2018/11/01/forxmlpath/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="tuwei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Blog Of tuwei">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/11/01/forxmlpath/" itemprop="url">sql高级语法-for xml path</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-11-01T22:50:21+08:00">
+                2018-11-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据库/" itemprop="url" rel="index">
+                    <span itemprop="name">数据库</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="for-xml-path"><a href="#for-xml-path" class="headerlink" title="for xml path"></a><strong>for xml path</strong></h1><p>over()函数</p>
+<p>补充：平时写sql<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select a,b,c count(*) as &apos;countNum&apos; from table</span><br></pre></td></tr></table></figure></p>
+<p>这样会报错<br>要么将abc也加入到 group by 子句里，<br>要么使用over函数</p>
+<p>select a,b,c count(*) over(partition by a) as ‘countNum’ from table</p>
+<p>a  b   count<br>1  1    2<br>1  sd   2<br>2  222  1<br>这样既显示了数量  又同时显示了记录  group by就不好搞了<br>row_number over()<br>rank over()<br>lead over()   lag over()</p>
+<h2 id="for-xml-path-这个在sql-server中的作用主要是把行数据转列。在mysql中有group-concat"><a href="#for-xml-path-这个在sql-server中的作用主要是把行数据转列。在mysql中有group-concat" class="headerlink" title="for xml path :这个在sql server中的作用主要是把行数据转列。在mysql中有group_concat"></a>for xml path :这个在sql server中的作用主要是把行数据转列。在mysql中有group_concat</h2><p>比如：</p>
+<table>
+<thead>
+<tr>
+<th>stuid</th>
+<th style="text-align:center">name</th>
+<th style="text-align:right">hobby</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td style="text-align:center">tuwei</td>
+<td style="text-align:right">爬山</td>
+</tr>
+<tr>
+<td>2</td>
+<td style="text-align:center">tuwei</td>
+<td style="text-align:right">看书</td>
+</tr>
+<tr>
+<td>3</td>
+<td style="text-align:center">tuwei</td>
+<td style="text-align:right">发呆</td>
+</tr>
+</tbody>
+</table>
+<p>现在要转换成一条记录：<br>stuid|name|hobby<br>—|:–:|—:<br>1|tuwei|爬山，看书，发呆</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> B.sName,<span class="keyword">LEFT</span>(StuList,<span class="keyword">LEN</span>(StuList)<span class="number">-1</span>) <span class="keyword">as</span> hobby <span class="keyword">FROM</span> (</span><br><span class="line">    <span class="keyword">SELECT</span> </span><br><span class="line">    sName,</span><br><span class="line">    (<span class="keyword">SELECT</span> hobby+<span class="string">','</span> <span class="keyword">FROM</span> student </span><br><span class="line">      <span class="keyword">WHERE</span> sName=A.sName </span><br><span class="line">      <span class="keyword">FOR</span> <span class="keyword">XML</span> <span class="keyword">PATH</span>(<span class="string">''</span>)) <span class="keyword">AS</span> StuList</span><br><span class="line">      </span><br><span class="line">    <span class="keyword">FROM</span> student A </span><br><span class="line">    <span class="keyword">GROUP</span> <span class="keyword">BY</span> sName</span><br><span class="line">) B</span><br></pre></td></tr></table></figure>
+<h2 id="PIVOT-和UNPIVOT-行列转换函数"><a href="#PIVOT-和UNPIVOT-行列转换函数" class="headerlink" title="PIVOT 和UNPIVOT: 行列转换函数"></a>PIVOT 和UNPIVOT: 行列转换函数</h2><table>
+<thead>
+<tr>
+<th>stuid</th>
+<th style="text-align:center">name</th>
+<th style="text-align:right">subject</th>
+<th>score</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td style="text-align:center">tuwei</td>
+<td style="text-align:right">语文</td>
+<td>3</td>
+</tr>
+<tr>
+<td>2</td>
+<td style="text-align:center">tuwei</td>
+<td style="text-align:right">数学</td>
+<td>4</td>
+</tr>
+<tr>
+<td>3</td>
+<td style="text-align:center">tuwei</td>
+<td style="text-align:right">英语</td>
+<td>5</td>
+</tr>
+<tr>
+<td>4</td>
+<td style="text-align:center">zhang</td>
+<td style="text-align:right">语文</td>
+<td>35</td>
+</tr>
+<tr>
+<td>5</td>
+<td style="text-align:center">zhang</td>
+<td style="text-align:right">数学</td>
+<td>43</td>
+</tr>
+<tr>
+<td>6</td>
+<td style="text-align:center">zhang</td>
+<td style="text-align:right">英语</td>
+<td>54</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">select * from stuScore as p </span><br><span class="line">Pivot</span><br><span class="line">(</span><br><span class="line">    sum(score) for</span><br><span class="line">    p.Subject IN([语文],[数学],[英语])</span><br><span class="line">) AS T</span><br></pre></td></tr></table></figure>
+<p>行转列<br>stuid|name|语文|数学|英语<br>—|:–:|:—:|:—:|:—:<br>1|tuwei|3|4|5<br>2|zhang|35|43|54</p>
+<p>列转行  转回上面的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">select P.name, p.Subject, P.score</span><br><span class="line">from</span><br><span class="line">(</span><br><span class="line">    select * from stuScore2</span><br><span class="line">) T</span><br><span class="line">UNPIVOT</span><br><span class="line">(</span><br><span class="line">    Score FOR Subject IN</span><br><span class="line">    (语文，数学，英语)</span><br><span class="line">)p</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="tuweiwei.github.io/2018/11/01/单例/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="tuwei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Blog Of tuwei">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/11/01/单例/" itemprop="url">单例模式</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-11-01T22:50:21+08:00">
+                2018-11-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/设计模式/" itemprop="url" rel="index">
+                    <span itemprop="name">设计模式</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>1.饿汉式<br>这种方式在类初始化的时候实例就创建好了，由于是静态的，只会创建一次，问题是，如果创建的这个对象不受控制，假如（别的静态方法导致类初始化）该对象一直都没有使用，那无疑是种浪费<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public class Singleton &#123;</span><br><span class="line">	private static Singleton instance=new Singleton();</span><br><span class="line">	private Singleton()&#123;</span><br><span class="line">	&#125;</span><br><span class="line">	public static Singleton getInstance()&#123;</span><br><span class="line">		return instance;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>2.synchronized方法<br>下面这种方式恐怕是每个人都能第一时间想到的实现方式<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">public class Singleton &#123;</span><br><span class="line">	private static Singleton instance;</span><br><span class="line">	private Singleton()&#123;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">	public static synchronized Singleton getInstance()&#123;</span><br><span class="line">		if(instance==null)&#123;</span><br><span class="line">			instance=new Singleton();</span><br><span class="line">		&#125;</span><br><span class="line">		return instance;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">由于在静态方法上加锁-类锁，效率不高</span><br></pre></td></tr></table></figure></p>
+<p>3.使用 静态内部类<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public class Singleton &#123;</span><br><span class="line">	private Singleton()&#123;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">	private static class SingletonHolder&#123;</span><br><span class="line">		private static Singleton instance=new Singleton();</span><br><span class="line">	&#125;</span><br><span class="line">	public static Singleton getInstance()&#123;</span><br><span class="line">		return SingletonHolder.instance;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>利用classloder机制来保证初始化instance时只有一个线程，和饿汉式的区别是：饿汉式只要Singleton类被加载，那么instance就会被实例化，而这种方式是Singleton类被加载了，instance也不一定被初始化，只有通过调用getInstance()方法时才会显式装载SingletonHolder类，从而实例化instance，可以做到需要的时候创建实例</p>
+<p>4.枚举<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">public class Singleton &#123;</span><br><span class="line"></span><br><span class="line">	private enum MyEnumSingleton&#123;</span><br><span class="line">		singletonFactory;</span><br><span class="line">		private Singleton instance;</span><br><span class="line">//		枚举类的构造方法在类加载时被实例化</span><br><span class="line">		private MyEnumSingleton()&#123;</span><br><span class="line">			instance=new Singleton();</span><br><span class="line">		&#125;</span><br><span class="line">		public Singleton getInstance()&#123;</span><br><span class="line">			return instance;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	public static Singleton getInstance()&#123;</span><br><span class="line">		return MyEnumSingleton.singletonFactory.getInstance();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">更为简洁的写法</span><br><span class="line">public enum Singleton &#123;  </span><br><span class="line">    INSTANCE;  </span><br><span class="line">    public void method() &#123;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>枚举的本质就是 实例可数， 上面创建两个实例，一个singletonFactory， instance， 利用工厂模式来获取<br>这种方式不仅能避免多线程同步问题，而且还能防止反序列化重新创建新的对象</p>
+<p>5.static 代码块 这个和静态变量一样，在使用类的时候就已经执行赋值<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">public class Singleton &#123;</span><br><span class="line">	private static Singleton instance=null;</span><br><span class="line">	private Singleton()&#123;</span><br><span class="line">	&#125;</span><br><span class="line">	static &#123;</span><br><span class="line">		instance=new Singleton();</span><br><span class="line">	&#125;</span><br><span class="line"> </span><br><span class="line">	public static Singleton getInstance()&#123;</span><br><span class="line">		return instance;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>6.双重检查<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">public class Singleton &#123;</span><br><span class="line">	private volatile static Singleton instance=null;</span><br><span class="line">	private Singleton()&#123;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line"> </span><br><span class="line">	public static Singleton getInstance()&#123;</span><br><span class="line">		if(instance==null)&#123;    ----------------------1</span><br><span class="line">			synchronized(Singleton.class)&#123;</span><br><span class="line">				if(instance==null)&#123;------------------2</span><br><span class="line">					instance=new Singleton();</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		return instance;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>多线程时，如果都停留在1处， 可以想象没有2处的校验的话， 第二个线程等待第一个线程释放锁后，又实例化了一遍。<br><strong><em>“双重检查的问题是：并不能保证它会在单处理器或多处理器计算机上顺利运行。双重检查失败的问题并不归咎于 JVM 中的实现 bug，而是归咎于 Java 平台内存模型。内存模型允许所谓的“无序写入” 导致二次检查失败,此法也就行不通了”</em></strong></p>
+<p>//问题？<br>如果单例类由不同的类装载器装入，那便有可能存在多个单例类的实例。(利用下面的方式手动装载单例类)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">原理：</span><br><span class="line">setContextClassLoader(ClassLoader cl)用来获取和设置线程的上下文类加载器。</span><br><span class="line">如果没有通过 setContextClassLoader(ClassLoader cl)方法进行设置的话，线程将继承其父线程的上下文类加载器。Java 应用运行的初始线程的上下文类加载器是系统类加载器(appClassLoader)。在线程中运行的代码可以通过此类加载器来加载类和资源。</span><br><span class="line"></span><br><span class="line">打个比方，tomcat是多线程服务的，那么从当前线程所用的类加载器来加载这个单例类时，如果每个线程的类加载器都不同，就有可能创建这个单例类的多个实例，一般程序里不会设置setContextClassLoader(ClassLoader cl)， 此时共同调用同一个类加载器来加载单例类。</span><br><span class="line">private static Class getClass(String classname) throws ClassNotFoundException &#123;     </span><br><span class="line"></span><br><span class="line">      ClassLoader classLoader = Thread.currentThread().getContextClassLoader();     </span><br><span class="line">      </span><br><span class="line">      if(classLoader == null)    </span><br><span class="line">      &#123;</span><br><span class="line">         classLoader = Singleton.class.getClassLoader();     </span><br><span class="line">      &#125;</span><br><span class="line">      </span><br><span class="line">      return (classLoader.loadClass(classname));     </span><br><span class="line">   &#125;     </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>2.如果Singleton实现了java.io.Serializable接口，那么这个类的实例就可能被序列化和复原。如果序列化一个单例类的对象，接下来复原那个对象，那你就会有多个单例类的实例(提供一个复原的方法)。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public class Singleton implements java.io.Serializable &#123;     </span><br><span class="line">   public static Singleton instance = new Singleton();     </span><br><span class="line">   protected Singleton() &#123;     </span><br><span class="line">        </span><br><span class="line">   &#125;     </span><br><span class="line">   private Object readResolve() &#123;     </span><br><span class="line">        return instance;     </span><br><span class="line">   &#125;    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="附加synchronized说明"><a href="#附加synchronized说明" class="headerlink" title="附加synchronized说明"></a>附加synchronized说明</h3><p>synchronized四种用法</p>
+<ol>
+<li>修饰方法<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public synchronized void method()</span><br><span class="line">&#123;</span><br><span class="line">   // todo</span><br><span class="line">&#125;</span><br><span class="line">public void method()</span><br><span class="line">&#123;</span><br><span class="line">   synchronized(this) &#123;</span><br><span class="line">      // todo</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>两种写法效果一样，不过第二种可归为修饰代码块<br>synchronized不能被继承，即使子类覆盖了该方法，但未加synchronized修饰，仍认为是普通方法</p>
+<ol start="2">
+<li><p>修饰类</p>
+</li>
+<li><p>修饰代码块</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">class MyThread implements Runnable &#123;</span><br><span class="line">	   private static int count;</span><br><span class="line">	   public MyThread() &#123;</span><br><span class="line">	      count = 0;</span><br><span class="line">	   &#125;</span><br><span class="line">	   public  void run() &#123;</span><br><span class="line">	      synchronized(this) &#123;</span><br><span class="line">	         for (int i = 0; i &lt; 5; i++) &#123;</span><br><span class="line">	            try &#123;	               System.out.println(Thread.currentThread().getName() + &quot;:&quot; + (count++));</span><br><span class="line">	               Thread.sleep(1000);</span><br><span class="line">	            &#125; catch (InterruptedException e) &#123;</span><br><span class="line">	               e.printStackTrace();</span><br><span class="line">	            &#125;</span><br><span class="line">	         &#125;</span><br><span class="line">	      &#125;</span><br><span class="line">	   &#125;</span><br><span class="line"> </span><br><span class="line">	   public int getCount() &#123;</span><br><span class="line">	      return count;</span><br><span class="line">	   &#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">public class DemoTest &#123;</span><br><span class="line">	public static void main(String args[])&#123;</span><br><span class="line">//示例1    交替执行  </span><br><span class="line">//		SyncThread s1 = new SyncThread();</span><br><span class="line">//		SyncThread s2 = new SyncThread();</span><br><span class="line">//		Thread t1 = new Thread(s1);</span><br><span class="line">//		Thread t2 = new Thread(s2);</span><br><span class="line">//示例2		t1先执行完  t2再继续执行  因为锁定的为同一对象 ，注意t1执行时 t2是可以执行非同步方法的</span><br><span class="line">		SyncThread s = new SyncThread();</span><br><span class="line">		Thread t1 = new Thread(s);</span><br><span class="line">		Thread t2 = new Thread(s);</span><br><span class="line">		</span><br><span class="line">		t1.start();</span><br><span class="line">		t2.start();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修饰静态方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">class ClassName &#123;</span><br><span class="line">   public void method() &#123;</span><br><span class="line">      synchronized(ClassName.class) &#123;</span><br><span class="line">         // todo</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line">这种和 修饰类一样，锁住的是这个类的所有对象</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="tuweiwei.github.io/2018/11/01/动态规划/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="tuwei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Blog Of tuwei">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/11/01/动态规划/" itemprop="url">动态规划</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-11-01T22:50:21+08:00">
+                2018-11-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据结构和算法/" itemprop="url" rel="index">
+                    <span itemprop="name">数据结构和算法</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>1 动态规划： 将原问题拆解为若干子问题， 同时保存子问题的答案e，使得每个子问题只求解一次，最终获得原问题的姐</p>
+<p>通常我们解决的问题是一个递归问题时，就要考虑是否存在重叠子问题，如果存在，采用记忆化搜索（自顶向下,就是我们假设我们已经知道了子问题的解了）或者动态规划（自底向上）  来解决</p>
+<p>例子： 斐波那契数列</p>
+<p>最容易想到的递归 指数级复杂度<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">int fib(n)&#123;</span><br><span class="line">  if(n==0)&#123;</span><br><span class="line">    return 0</span><br><span class="line">  &#125;</span><br><span class="line">  if(n==1)&#123;</span><br><span class="line">    return 1</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  return fib(n-1) + fib(n-2)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>可以发现对于求fib(5) 就要求fib(4)+fib(3) 对于fib(3) fib(4)会求一遍fib(3)  fib(3)自身也要求一遍，这就产生了重叠问题 那么为什么不可以在计算过程中将这些值记录下来，下次就可以直接返回，不用重新计算了</p>
+<h2 id="采用记忆化方法-O（n）复杂度"><a href="#采用记忆化方法-O（n）复杂度" class="headerlink" title="采用记忆化方法  O（n）复杂度"></a>采用记忆化方法  O（n）复杂度</h2><p>初始化一个集合  n+1个 默认值都为-1<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">vector&lt;int&gt; v(n+1,-1)</span><br><span class="line">int fib(n)&#123;</span><br><span class="line">  if(n==0)&#123;</span><br><span class="line">    return 0</span><br><span class="line">  &#125;</span><br><span class="line">  if(n==1)&#123;</span><br><span class="line">    return 1</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  if(v[n] == -1)</span><br><span class="line">      v[n] =  fib(n-1) + fib(n-2)</span><br><span class="line">  return v[n]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="采用自底向上的方式（从小问题开始求解-非递归）"><a href="#采用自底向上的方式（从小问题开始求解-非递归）" class="headerlink" title="采用自底向上的方式（从小问题开始求解 非递归）"></a>采用自底向上的方式（从小问题开始求解 非递归）</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">int fib(n)&#123;</span><br><span class="line">  vector&lt;int&gt; v(n+1,-1)</span><br><span class="line">  v[0] = 0</span><br><span class="line">  v[1] = 1</span><br><span class="line">  for(int i=2; i&lt;=n; i++)&#123;</span><br><span class="line">     v[i] = v[i-1]+v[i-2]</span><br><span class="line">  &#125;</span><br><span class="line">  reutrn v[n]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>有一个楼梯，共有N姐台阶，每一次，可以上一个，也可以上两个，问，爬上这个楼梯，共有多少不同的方法<br>类比于背包问题，如果我们第一次上一个，那么剩下n-1个台阶要走这个子问题 如果上2个 剩下n-2个台阶要走这个子问题<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">int clime(n)&#123;</span><br><span class="line">   if(n==1)&#123;</span><br><span class="line">      return 1</span><br><span class="line">   &#125;</span><br><span class="line">   if(n==2)&#123;</span><br><span class="line">      return 2</span><br><span class="line">   &#125;</span><br><span class="line">   return clime(n-1) + clime(n-2)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="tuweiwei.github.io/2018/10/28/test/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -684,7 +1553,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="tuweiwei.github.io/2018/10/25/正则表达式/">
+    <link itemprop="mainEntityOfPage" href="tuweiwei.github.io/2018/10/25/转换时间/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="tuwei">
@@ -703,7 +1572,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/10/25/正则表达式/" itemprop="url">正则</a></h1>
+                <a class="post-title-link" href="/2018/10/25/转换时间/" itemprop="url">sqlserver 时间转换</a></h1>
         
 
         <div class="post-meta">
@@ -738,8 +1607,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/工具/" itemprop="url" rel="index">
-                    <span itemprop="name">工具</span>
+                  <a href="/categories/数据库/" itemprop="url" rel="index">
+                    <span itemprop="name">数据库</span>
                   </a>
                 </span>
 
@@ -777,127 +1646,7 @@
       
         
           
-            <ul>
-<li>条件或 ： ^(130|131|132|155|156|185|186|145|176)\d{8}$</li>
-</ul>
-<ul>
-<li>区间   <ul>
-<li>限定 0 到 9 可以写成 [0-9]</li>
-<li>限定 A-Z 写成 [A-Z]</li>
-<li>限定某些数字 [165]</li>
-</ul>
-</li>
-</ul>
-<p><code>^((13[0-2])|(15[56])|(18[5-6])|145|176)\d{8}$</code></p>
-<hr>
-<h1 id="正前瞻-正后顾"><a href="#正前瞻-正后顾" class="headerlink" title="正前瞻 正后顾"></a><strong>正前瞻 正后顾</strong></h1><p><strong>正前瞻： （？=pattern）</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;span class=&quot;read-count&quot;&gt;阅读数：641&lt;/span&gt;</span><br></pre></td></tr></table></figure></p>
-<table>
-<thead>
-<tr>
-<th>序号</th>
-<th style="text-align:center">正则</th>
-<th style="text-align:center">结果</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1</td>
-<td style="text-align:center">.+(?=)</td>
-<td style="text-align:center"><span class="read-count">阅读数：641</span></td>
-</tr>
-<tr>
-<td>2</td>
-<td style="text-align:center">\d+(?=)</td>
-<td style="text-align:center">641</td>
-</tr>
-</tbody>
-</table>
-<p><strong>正后顾： （?&lt;=pattern）</strong></p>
-<h1 id="负前瞻-负后顾"><a href="#负前瞻-负后顾" class="headerlink" title="负前瞻 负后顾"></a><strong>负前瞻 负后顾</strong></h1><p><code>负前瞻：(?!pattern)</code></p>
-<blockquote>
-<p>例子：“我爱祖国，我是祖国的花朵”<br>句子里有两个祖国，现在要找到不是’的花朵’前面的祖国，即第一个祖国<br>用正则就可以这样写：    祖国(?!的花朵)<br>序号|正则|结果|<br>—|:–:|:—:<br>1|祖国(?!的花朵) |祖国</p>
-</blockquote>
-<p><code>负后顾：(?&lt;!pattern)</code></p>
-<h1 id="捕获-和-非捕获"><a href="#捕获-和-非捕获" class="headerlink" title="捕获 和 非捕获"></a><strong>捕获 和 非捕获</strong></h1><p>1 数字编号 捕获组</p>
-<blockquote>
-<p>例子； 020-85653333   (0\d{2})-(\d{8}) 第0个为本身<br>分组的个数有：2<br>第0个分组为：020-85653333<br>第1个分组为：020<br>第2个分组为：85653333</p>
-</blockquote>
-<p>2 命名编号 捕获组<br><strong><code>&quot;020-85653333&quot;</code></strong><br>“(?<quhao>0\d{2})-(?<haoma>\d{8})”</haoma></quhao></p>
-<table>
-<thead>
-<tr>
-<th>序号</th>
-<th style="text-align:center">名称</th>
-<th style="text-align:center">分组</th>
-<th style="text-align:center">内容</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>0</td>
-<td style="text-align:center">0</td>
-<td style="text-align:center">(0\d{2})-(\d{8})</td>
-<td style="text-align:center">020-85653333</td>
-</tr>
-<tr>
-<td>1</td>
-<td style="text-align:center">quhao</td>
-<td style="text-align:center">(0\d{2})</td>
-<td style="text-align:center">020</td>
-</tr>
-<tr>
-<td>2</td>
-<td style="text-align:center">haoma</td>
-<td style="text-align:center">(\d{8})</td>
-<td style="text-align:center">85653333</td>
-</tr>
-</tbody>
-</table>
-<p>非捕获组：标识那些不需要捕获的分组（排除它），也就是根据需要，保存你需要保存的组   “(?:0\d{2})-(\d{8})”</p>
-<table>
-<thead>
-<tr>
-<th>序号</th>
-<th style="text-align:center">名称</th>
-<th style="text-align:center">分组</th>
-<th style="text-align:center">内容</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>0</td>
-<td style="text-align:center">0</td>
-<td style="text-align:center">(0\d{2})-(\d{8})</td>
-<td style="text-align:center">020-85653333</td>
-</tr>
-<tr>
-<td>1</td>
-<td style="text-align:center">1</td>
-<td style="text-align:center">(\d{8})</td>
-<td style="text-align:center">85653333</td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h1 id="反向引用"><a href="#反向引用" class="headerlink" title="反向引用"></a><strong>反向引用</strong></h1><p>例子：比如要查找一串字母”aabbbbgbddesddfiid”里成对的字母。<br>(\w)\1<br>捕获组有两种命名方式，一种是是根据捕获分组顺序命名，一种是自定义命名来作为捕获组的命名在默认情况下都是以数字来命名，而且数字命名的顺序是从 1 开始的</p>
-<p>把字符串中abc换成a<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">String test = <span class="string">"abcbbabcbcgbddesddfiid"</span>;</span><br><span class="line"><span class="number">2</span>String reg=<span class="string">"(a)(b)c"</span>;</span><br><span class="line"><span class="number">3</span>System.out.println(test.replaceAll(reg, <span class="string">"$1"</span>));  $<span class="number">1</span>即为（a）</span><br></pre></td></tr></table></figure></p>
-<h1 id="贪婪和非贪婪"><a href="#贪婪和非贪婪" class="headerlink" title="贪婪和非贪婪"></a><strong>贪婪和非贪婪</strong></h1><p>贪婪匹配：当正则表达式中包含能接受重复的限定符时，通常的行为是（在使整个表达式能得到匹配的前提下）匹配尽可能多的字符，这匹配方式叫做贪婪匹配。<br>特性：一次性读入整个字符串进行匹配，每当不匹配就舍弃最右边一个字符，继续匹配，依次匹配和舍弃（这种匹配 - 舍弃的方式也叫做回溯），直到匹配成功或者把整个字符串舍弃完为止，因此它是一种最大化的数据返回，能多不会少。</p>
-<p>默认情况下 ？ * + {3,6} 为贪婪匹配<br>例子： 61762828 176 2991 44 871      reg: \d{3,6}<br>默认： 617628<br>       176<br>       2991<br>       871</p>
-<ul>
-<li>*重复零次或更多次</li>
-<li>+重复一次或更多次</li>
-<li>?    重复零次或一次</li>
-<li>{n}    重复n次</li>
-<li>{n,}    重复n次或更多次</li>
-<li>{n,m}    重复n到m次</li>
-<li>*?    重复任意次，但尽可能少重复</li>
-<li>+?    重复1次或更多次，但尽可能少重复</li>
-<li>??    重复0次或1次，但尽可能少重复</li>
-<li>{n,m}?    重复n到m次，但尽可能少重复</li>
-<li>{n,}?    重复n次以上，但尽可能少重复<br>以上默认都为 贪婪模式</li>
-</ul>
-<p>更多访问：<br><a href="http://tool.chinaz.com/regex/" target="_blank">站长之家</a></p>
-<p><img src="https://github.com/tuweiwei/StaticRaw/raw/master/flag.jpg" alt="图片alt"></p>
+            <p>Select CONVERT(varchar(100), GETDATE(), 0): 05 16 2006 10:57AM<br>Select CONVERT(varchar(100), GETDATE(), 1): 05/16/06<br>Select CONVERT(varchar(100), GETDATE(), 2): 06.05.16<br>Select CONVERT(varchar(100), GETDATE(), 3): 16/05/06<br>Select CONVERT(varchar(100), GETDATE(), 4): 16.05.06<br>Select CONVERT(varchar(100), GETDATE(), 5): 16-05-06<br>Select CONVERT(varchar(100), GETDATE(), 6): 16 05 06<br>Select CONVERT(varchar(100), GETDATE(), 7): 05 16, 06<br>Select CONVERT(varchar(100), GETDATE(), 8): 10:57:46<br>Select CONVERT(varchar(100), GETDATE(), 9): 05 16 2006 10:57:46:827AM<br>Select CONVERT(varchar(100), GETDATE(), 10): 05-16-06<br>Select CONVERT(varchar(100), GETDATE(), 11): 06/05/16<br>Select CONVERT(varchar(100), GETDATE(), 12): 060516<br>Select CONVERT(varchar(100), GETDATE(), 13): 16 05 2006 10:57:46:937<br>Select CONVERT(varchar(100), GETDATE(), 14): 10:57:46:967<br>Select CONVERT(varchar(100), GETDATE(), 20): 2006-05-16 10:57:47<br>Select CONVERT(varchar(100), GETDATE(), 21): 2006-05-16 10:57:47.157<br>Select CONVERT(varchar(100), GETDATE(), 22): 05/16/06 10:57:47 AM<br>Select CONVERT(varchar(100), GETDATE(), 23): 2006-05-16<br>Select CONVERT(varchar(100), GETDATE(), 24): 10:57:47<br>Select CONVERT(varchar(100), GETDATE(), 25): 2006-05-16 10:57:47.250<br>Select CONVERT(varchar(100), GETDATE(), 100): 05 16 2006 10:57AM<br>Select CONVERT(varchar(100), GETDATE(), 101): 05/16/2006<br>Select CONVERT(varchar(100), GETDATE(), 102): 2006.05.16<br>Select CONVERT(varchar(100), GETDATE(), 103): 16/05/2006<br>Select CONVERT(varchar(100), GETDATE(), 104): 16.05.2006<br>Select CONVERT(varchar(100), GETDATE(), 105): 16-05-2006<br>Select CONVERT(varchar(100), GETDATE(), 106): 16 05 2006<br>Select CONVERT(varchar(100), GETDATE(), 107): 05 16, 2006<br>Select CONVERT(varchar(100), GETDATE(), 108): 10:57:49<br>Select CONVERT(varchar(100), GETDATE(), 109): 05 16 2006 10:57:49:437AM<br>Select CONVERT(varchar(100), GETDATE(), 110): 05-16-2006<br>Select CONVERT(varchar(100), GETDATE(), 111): 2006/05/16<br>Select CONVERT(varchar(100), GETDATE(), 112): 20060516<br>Select CONVERT(varchar(100), GETDATE(), 113): 16 05 2006 10:57:49:513<br>Select CONVERT(varchar(100), GETDATE(), 114): 10:57:49:547<br>Select CONVERT(varchar(100), GETDATE(), 120): 2006-05-16 10:57:49<br>Select CONVERT(varchar(100), GETDATE(), 121): 2006-05-16 10:57:49.700<br>Select CONVERT(varchar(100), GETDATE(), 126): 2006-05-16T10:57:49.827<br>Select CONVERT(varchar(100), GETDATE(), 130): 18 ???? ?????? 1427 10:57:49:907AM<br>Select CONVERT(varchar(100), GETDATE(), 131): 18/04/1427 10:57:49:920AM </p>
 
           
         
@@ -946,7 +1695,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="tuweiwei.github.io/2018/09/25/androiddir/">
+    <link itemprop="mainEntityOfPage" href="tuweiwei.github.io/2018/10/25/docker/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="tuwei">
@@ -965,7 +1714,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/09/25/androiddir/" itemprop="url">安卓存储卡目录</a></h1>
+                <a class="post-title-link" href="/2018/10/25/docker/" itemprop="url">docker</a></h1>
         
 
         <div class="post-meta">
@@ -977,8 +1726,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-25T22:50:21+08:00">
-                2018-09-25
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-10-25T22:50:21+08:00">
+                2018-10-25
               </time>
             
 
@@ -1000,8 +1749,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/android/" itemprop="url" rel="index">
-                    <span itemprop="name">android</span>
+                  <a href="/categories/大数据/" itemprop="url" rel="index">
+                    <span itemprop="name">大数据</span>
                   </a>
                 </span>
 
@@ -1038,10 +1787,10 @@
 
       
         
-          安卓SD目录
+          docker学习
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/09/25/androiddir/">
+            <a class="btn" href="/2018/10/25/docker/">
               Read more &raquo;
             </a>
           </div>
@@ -1092,7 +1841,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="tuweiwei.github.io/2018/09/16/numpy/">
+    <link itemprop="mainEntityOfPage" href="tuweiwei.github.io/2018/10/25/服务器篇/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="tuwei">
@@ -1111,7 +1860,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/09/16/numpy/" itemprop="url">numpy</a></h1>
+                <a class="post-title-link" href="/2018/10/25/服务器篇/" itemprop="url">完成端口</a></h1>
         
 
         <div class="post-meta">
@@ -1123,8 +1872,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-16T22:50:21+08:00">
-                2018-09-16
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-10-25T22:50:21+08:00">
+                2018-10-25
               </time>
             
 
@@ -1146,8 +1895,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/MachineLeaning/" itemprop="url" rel="index">
-                    <span itemprop="name">MachineLeaning</span>
+                  <a href="/categories/服务器/" itemprop="url" rel="index">
+                    <span itemprop="name">服务器</span>
                   </a>
                 </span>
 
@@ -1185,417 +1934,9 @@
       
         
           
-            
-          
-        
-      
-    </div>
-    
-    
-    
+            <p>服务器程序，其可承受的同时连接数目是有理论峰值的，通过C＋＋中对TSocket的定义类型：word，我们可以判定这个连接理论峰值是65535，也就是说，你的单个服务器程序，最多可以承受6万多的用户同时连接。但是，在实际应用中，能达到一万人的同时连接并能保证正常的数据交换已经是很不容易了，通常这个值都在2000到5000之间</p>
+<p>如果要实现2000到5000用户的单服务器同时在线，是不难的。在windows下，比较成熟的技术是采用IOCP－－完成端口</p>
 
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="tuweiwei.github.io/2018/09/16/树状数组学习/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="tuwei">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Blog Of tuwei">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/16/树状数组学习/" itemprop="url">树状数组学习</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-16T18:24:16+08:00">
-                2018-09-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>先看一幅图：<img src="https://github.com/tuweiwei/tuweiwei.github.io/raw/master/images/1.jpg" alt="tu"></p>
-<p>如图可知：<br>C[1]=A[1];<br>C[2]=A[1]+A[2];<br>C[3]=A[3];<br>C[4]=A[1]+A[2]+A[3]+A[4];<br>C[5]=A[5];<br>C[6]=A[5]+A[6];<br>C[7]=A[7];<br>C[8]=A[1]+A[2]+A[3]+A[4]+A[5]+A[6]+A[7]+A[8];<br>这里可以发现一个规律：</p>
-<pre><code>C数组下标换算成二进制后后面的0的个数  设为K，即每个C[I]所管辖的范围为2^K个数
-</code></pre><hr>
-<p>引入lowbit(x) 实质上是lowbit(x) = 2^K<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">int lowbit(int t)&#123;</span><br><span class="line">   return t&amp;(-t);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p><code>-t 表示 t的负数 计算机中负数使用对应正数的补码来表示
-  t=6(0110)
-  -t = -6=(1001+1) = 1010
-   t&amp;(-t) = (0010) = 2^1 (这里的1 刚好对应6的二进制末尾0的个数)</code></p>
-<p><strong>C[i]=A[i-2^k+1]+A[i-2^k+2]+……A[i];（k为i末尾0的个数）<br>C[i]=A[i-lowbit(i)+1]+A[i-lowbit(i)+2]+……A[i];</strong></p>
-<hr>
-<h1 id="区间求和"><a href="#区间求和" class="headerlink" title="区间求和"></a>区间求和</h1><p>下面利用C[i]数组，求A数组中前i项的和<br>举个例子 i=7<br>sum[7]=A[1]+A[2]+A[3]+A[4]+A[5]+A[6]+A[7] ;<br>前i项和<br>C[4]=A[1]+A[2]+A[3]+A[4];  C[6]=A[5]+A[6];  C[7]=A[7];<br>可以推出:   sum[7]=C[4]+C[6]+C[7];<br>序号写为二进制: sum[(111)]=C[(100)]+C[(110)]+C[(111)];</p>
-<p>看代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">int getsum(int x)</span><br><span class="line">&#123;</span><br><span class="line">    int ans=0;</span><br><span class="line">    for(int i=x;i&gt;0;i-=lowbit(i))</span><br><span class="line">    ans+=C[i];</span><br><span class="line">    return ans；</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>对于i=7 进行演示<br>                     getsum(7)(111)  ans+=C[7]<br>lowbit(7)=1(1)    7-lowbit(7)=6(110)    ans+=C[6]</p>
-<p>lowbit(6)=2(10)   6-lowbit(6)=4(100)    ans+=C[4]</p>
-<p>lowbit(4)=3(100)  4-lowbit(4)=0(000) </p>
-<p><code>lowbit前面已说，可以理解为c[i]所管辖的a[i]的个数，如C[7]=1 所管辖一个元素 而最后一个元素必为自己即A[7], 7-lowbit(7) 即减去自己所管辖的范围的个数，再加上剩余区间，直到为0</code></p>
-<p>对于i=5 进行演示<br>                                  5(101)           ans+=C[5]<br>lowbit(5)=001  5-lowbit(5)=4(100)    ans+=C[4]<br>lowbit(4)=100  4-lowbit(4)=0(000)   </p>
-<hr>
-<h1 id="单点更新"><a href="#单点更新" class="headerlink" title="单点更新"></a>单点更新</h1><p>当我们修改A[]数组中的某一个值时  应当如何更新C[]数组呢？<br>回想一下 区间查询的过程，再看一下上文中列出的图</p>
-<p>结合代码分析<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">void add(int x,int y)</span><br><span class="line">&#123;</span><br><span class="line">    for(int i=x;i&lt;=n;i+=lowbit(i))</span><br><span class="line">    tree[i]+=y;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>//可以发现 更新过程是查询过程的逆过程<br>//由叶子结点向上更新C[]数组<br><img src="https://github.com/tuweiwei/tuweiwei.github.io/raw/master/images/2.jpg" alt="tu"></p>
-<p>如图：<br>当更新A[1]时  需要向上更新C[1] ,C[2],C[4],C[8]<br>                     C[1],   C[2],    C[4],     C[8]<br>写为二进制  C[(001)],C[(010)],C[(100)],C[(1000)]<br>                                      1(001)        C[1]+=A[1]<br>lowbit(1)=001 1+lowbit(1)=2(010)     C[2]+=A[1]</p>
-<p>lowbit(2)=010 2+lowbit(2)=4(100)     C[4]+=A[1]</p>
-<p>lowbit(4)=100 4+lowbit(4)=8(1000)   C[8]+=A[1]</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="tuweiwei.github.io/2018/08/25/maven/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="tuwei">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Blog Of tuwei">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/25/maven/" itemprop="url">Maven</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-25T22:50:21+08:00">
-                2018-08-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/工具/" itemprop="url" rel="index">
-                    <span itemprop="name">工具</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          maven学习
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/08/25/maven/">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="tuweiwei.github.io/2018/02/26/常用工具网址/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="tuwei">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Blog Of tuwei">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/02/26/常用工具网址/" itemprop="url">常用网址工具</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-26T09:23:04+08:00">
-                2018-02-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="npm换源命令："><a href="#npm换源命令：" class="headerlink" title="npm换源命令："></a>npm换源命令：</h2><p>npm install -g cnpm –registry=<a href="https://registry.npm.taobao.org" target="_blank" rel="noopener">https://registry.npm.taobao.org</a></p>
-<h2 id="linux-yum换源命令："><a href="#linux-yum换源命令：" class="headerlink" title="linux yum换源命令："></a>linux yum换源命令：</h2>
           
         
       
@@ -1633,6 +1974,10 @@
   </section>
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
 
 
           </div>
@@ -1676,7 +2021,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">16</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -1687,7 +2032,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -1698,7 +2043,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">17</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
